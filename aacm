@@ -4,7 +4,7 @@ const { makeDirs, makeFile } = require('./utils')
 const chalk = require('chalk')
 
 //#region setup
-program.version('1.0.3')
+program.version('1.0.4')
 program.option('-c, --class', 'generate class component')
 program.option('-f, --functional', 'generate functional component')
 program.option('-i, --asi', 'confidence mode - automatic semicolon insertion')

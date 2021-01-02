@@ -79,6 +79,8 @@ according to the flags.
 |                  | Uses modern syntax                       |
 | -f, --functional | Generates functional components          |
 |                  | This is the default                      |
+| -h, --help       | Generates functional components          |
+|                  | This is the default                      |
 | -i, --asi        | Confidence Mode                          |
 |                  | Use Automatic Semicolon Insertion        |
 | -k, --kebab      | Makes the generated directories          |
