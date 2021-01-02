@@ -56,7 +56,7 @@ You can pass in multiple component names at once, like so...
 
 `aacm Thing1 Thing2 Thing3`
 
-This will create:
+This creates...
 
 ```
 ./components/Thing1/Thing1.jsx
@@ -88,7 +88,7 @@ according to the flags.
 | --old-class      | Generates class components               |
 |                  | Uses classic syntax                      |
 | --features       | Outputs to features/                     |
-|                  | (default is components/)              |
+|                  | (default is components/)                 |
 
 Any of these may be combined. 
 
