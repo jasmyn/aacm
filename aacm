@@ -1,0 +1,174 @@
+#!/usr/bin/env node
+const { program } = require('commander')
+const { makeDirs, makeFile } = require('./utils')
+const chalk = require('chalk')
+
+//#region setup
+program.version('1.0.1')
+program.option('-c, --class', 'generate class component')
+program.option('-f, --functional', 'generate functional component')
+program.option('-i, --asi', 'confidence mode - automatic semicolon insertion')
+program.option('-k, --kebab', 'kebab-case dirs & file names')
+program.option('--css', 'make css not scss')
+program.option('--old-class', 'use classic class syntax')
+program.option('--features', 'outputs to features/')
+program.parse(process.argv)
+const asi = program.asi ? true : false
+const css = program.css ? true : false
+const kebab = program.kebab ? true : false
+const klass = program.class ? true : false
+const functional = program.functional ? true : false
+const oldClass = program.oldClass ? true : false
+const features = program.features ? true : false
+const semi = asi ? '' : ';'
+
+let componentType
+if (klass) componentType = 'class'
+else if (functional) componentType = 'functional'
+else if (oldClass) componentType = 'oldClass'
+else componentType = 'functional'
+//#endregion
+
+//#region names
+if (program.args.toString().length < 1) {
+  console.error(chalk.redBright('ERROR: Must pass in a component name!'))
+  return
+}
+
+let names = []
+for (const givenName of program.args) {
+  // givenName is the name they gave it
+  const name = givenName.toString()
+  const kebabName = kebabCase(name)
+
+  names.push([name, kebabName])
+}
+
+function kebabCase(name) {
+  function upperToHyphenLower(match, offset) {
+    return (offset > 0 ? '-' : '') + match.toLowerCase()
+  }
+  return name.replace(/[A-Z]/g, upperToHyphenLower)
+}
+
+async function makeStuff(
+  name,
+  className,
+  filetypes,
+  kebabName,
+  features = false
+) {
+  // filetypes ex: ['functional', 'style']
+  const files = {
+    functional: {
+      extension: 'jsx',
+      boilerplate: `import React from 'react'${semi}
+	
+import './${kebab ? kebabName : name}.scss'${semi}
+
+function ${name}() {
+	return (
+		<div className="${className}">
+			${name}
+		</div>
+	)${semi}
+}
+
+export default ${name}${semi}`
+    },
+    class: {
+      extension: 'jsx',
+      boilerplate: `import React from 'react'${semi}
+	
+import './${kebab ? kebabName : name}.scss'${semi}
+	
+class ${name} extends React.Component {
+	state = {
+	
+	}${semi}
+	
+	render() {
+		return (
+			<div className="${className}">
+				${name}
+			</div>
+		)${semi}
+	}
+}
+	
+export default ${name}${semi}`
+    },
+    oldClass: {
+      extension: 'jsx',
+      boilerplate: `import React from 'react'${semi}
+	
+import './${kebab ? kebabName : name}.scss'${semi}
+
+class ${name} extends React.Component {
+	constructor (props) {
+		super(props)${semi}
+
+		this.state = {
+
+		}${semi}
+	}
+
+	render() {
+		return (
+			<div className="${className}">
+				${name}
+			</div>
+		)${semi}
+	}
+}
+	
+export default ${name}${semi}`
+    },
+    style: {
+      extension: `${css ? 'css' : 'scss'}`,
+      boilerplate: `.${className} {
+	
+}`
+    }
+  }
+
+  if (features) {
+    try {
+      await makeDirs('features', name, kebabName)
+      for (file of filetypes) {
+        await makeFile('features', name, files, file, kebabName)
+      }
+    } catch (err) {
+      throw err
+    }
+  } else {
+    try {
+      await makeDirs('components', name, kebabName)
+      for (file of filetypes) {
+        await makeFile('components', name, files, file, kebabName)
+      }
+    } catch (err) {
+      throw err
+    }
+  }
+}
+
+// process requested components
+;(processComponents = async () => {
+  try {
+    for (nameSet of names) {
+      const name = nameSet[0]
+      const kebabName = nameSet[1]
+
+      await makeStuff(
+        name,
+        kebabName,
+        [componentType, 'style'],
+        kebab ? kebabName : undefined,
+        features
+      )
+    }
+  } catch (err) {
+    throw err
+  }
+})()
