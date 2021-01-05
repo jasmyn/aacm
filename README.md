@@ -79,12 +79,14 @@ according to the flags.
 |                  | Uses modern syntax                       |
 | -f, --functional | Generates functional components          |
 |                  | This is the default                      |
-| -h, --help       | Generates functional components          |
-|                  | This is the default                      |
+| -h, --help       | Shows available flags                    |
+|                  |                                          |
 | -i, --asi        | Confidence Mode                          |
 |                  | Use Automatic Semicolon Insertion        |
 | -k, --kebab      | Makes the generated directories          |
 |                  | and file names use kebab-case            |
+| -V, --version    | Shows version number                     |
+|                  |                                          |
 | --css            | Generates CSS                            |
 |                  | (default is SCSS)                        |
 | --old-class      | Generates class components               |
