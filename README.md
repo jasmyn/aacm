@@ -54,17 +54,22 @@ Now multiply that by every component you'll ever create and you've saved yoursel
 
 You can pass in multiple component names at once, like so...
 
-`aacm Thing1 Thing2 Thing3`
+`aacm Header Body Footer`
 
 This creates...
 
 ```
-./components/Thing1/Thing1.jsx
-./components/Thing1/Thing1.scss
-./components/Thing2/Thing2.jsx
-./components/Thing2/Thing2.scss
-./components/Thing3/Thing3.jsx
-./components/Thing3/Thing3.scss
+.
+└── components
+    ├── Body
+    │   ├── Body.jsx
+    │   └── Body.scss
+    ├── Footer
+    │   ├── Footer.jsx
+    │   └── Footer.scss
+    └── Header
+        ├── Header.jsx
+        └── Header.scss
 ```
 
 according to the flags.
