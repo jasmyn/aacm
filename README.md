@@ -14,7 +14,7 @@ aacm is meant to be installed globally, then used from your app's src/ directory
 
 For example, 
 
-`aacm ItemDetail`
+`$ aacm ItemDetail`
 
 gives you...
 
@@ -54,7 +54,7 @@ Now multiply that by every component you'll ever create and you've saved yoursel
 
 You can pass in multiple component names at once, like so...
 
-`aacm Header Body Footer`
+`$ aacm Header Body Footer`
 
 This creates...
 
